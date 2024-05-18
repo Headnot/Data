@@ -15,13 +15,14 @@ PM05<-read_excel("CF.xlsx",sheet=1)
   data<-subset(PM05,!is.na(QF)&!is.na(DASI)) 
   QF<-data05$QF      # quick flow （QF）amount
   DASI<-data05$DASI  # the sum of antecedent soil water and precipitation （ASW+P）
-  ##apply the piecewise regression
+
+#apply the piecewise regression
   o<-lm(QF~DASI)
   o.seg <- segmented(o,seg.Z=~DASI,npsi = 1)  
   slope <- slope(o.seg) # the slope of piecewise regression
   pred <- predict(o.seg, interval = "confidence") 
   
-###plot the data
+#plot the data
   BF05 <- ggplot(data,aes(x=DASI,y=QF))+
     geom_point()+
     geom_line(aes(y = pred05[,"fit"]),color = "blue",linewidth =1) + #
